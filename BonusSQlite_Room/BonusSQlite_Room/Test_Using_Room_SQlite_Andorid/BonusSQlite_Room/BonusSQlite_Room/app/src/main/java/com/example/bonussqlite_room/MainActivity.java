@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "goods.db").build();
         mySQLiteHelper = new MySQLiteHelper(this);
-        productList = new ArrayList<>();
-        adapter = new ProductAdapter(productList);
     }
     private void bindingAction(){
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
@@ -57,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }).start();
         btnInsert.setOnClickListener(this::onBtnInsertClick);
+        // Trong onCreate của MainActivity
     }
 
     private void onBtnInsertClick(View view) {
@@ -97,11 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadProducts() {
         new Thread(() -> {
-            List<Product> products = MainActivity.db.productDAO().getAllProducts();
+            productList = MainActivity.db.productDAO().getAllProducts();
             runOnUiThread(() -> {
-                productList.clear();
-                productList.addAll(products);
-                adapter.notifyDataSetChanged();
+                adapter.updateData(productList);
             });
         }).start();
     }

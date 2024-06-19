@@ -34,12 +34,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     public void updateData(List<Product> newProductList) {
-        if(newProductList!=null)
-        {
-            productList.clear();
-            productList.addAll(newProductList);
-            notifyDataSetChanged();
-        }
+        productList.clear();
+        productList.addAll(newProductList);
+        notifyDataSetChanged();
     }
 
     @Override
